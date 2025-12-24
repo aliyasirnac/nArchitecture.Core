@@ -25,6 +25,13 @@ public class HttpExceptionHandler : ExceptionHandler
         return Response.WriteAsync(details);
     }
 
+    public override Task HandleException(ConflictException conflictException)
+    {
+        Response.StatusCode = StatusCodes.Status409Conflict;
+        string details = new BusinessProblemDetails(conflictException.Message).ToJson();
+        return Response.WriteAsync(details);
+    }
+
     public override Task HandleException(ValidationException validationException)
     {
         Response.StatusCode = StatusCodes.Status400BadRequest;
